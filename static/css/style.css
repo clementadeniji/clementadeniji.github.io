@@ -189,3 +189,48 @@ html[data-theme="light"] body.home-page .footer-bottom a span {
   .personal-closing-inner { align-items: flex-start; flex-direction: column; gap: 26px; }
   .personal-closing { padding-top: 65px; padding-bottom: 65px; }
 }
+
+
+/* Simpler personal-site styling: fewer effects, calmer spacing, readable cards. */
+.personal-hero { padding-top: 94px; padding-bottom: 78px; }
+.personal-hero:before { display: none; }
+.personal-hero h1, .page-hero h1 { background: none; text-shadow: none; }
+.personal-hero .hero-intro { max-width: 610px; line-height: 1.8; }
+.personal-hero-note { display: none; }
+.personal-section-heading .eyebrow { margin-bottom: 10px; }
+.personal-interest-grid { margin-top: 25px; }
+.personal-interest-grid .interest-card { min-height: 0; padding: 24px; }
+.personal-interest-grid .card-number, .personal-interest-grid .line-icon { display: none; }
+.personal-interest-grid .interest-card h3 { margin-top: 0; }
+.personal-project-grid { margin-top: 25px; gap: 14px; }
+.personal-project-card { min-height: 0; padding: 23px; }
+.personal-project-card h3 { margin-top: 16px; }
+.personal-closing { padding-top: 55px; padding-bottom: 55px; }
+.personal-closing-inner h2 { margin: 0; }
+.simple-skill-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.simple-skill-grid .about-skill { min-height: 0; padding: 22px; }
+.simple-skill-grid .about-skill > span { display: none; }
+.simple-skill-grid .about-skill h3 { font-size: 16px; }
+.simple-skill-grid .about-skill p { font-size: 13px; }
+.simple-project-list { border-top: 1px solid var(--border); margin-top: 25px; }
+.simple-project { display: grid; grid-template-columns: 130px minmax(0, 1fr) auto; align-items: start; gap: 22px; padding: 23px 0; border-bottom: 1px solid var(--border); }
+.simple-project h3 { margin: 0 0 7px; font: 700 18px/1.35 var(--display); }
+.simple-project p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+.simple-project .text-link { white-space: nowrap; }
+.education-simple > div { padding-bottom: 15px; margin-bottom: 15px; border-bottom: 1px solid var(--border); }
+.education-simple > div:last-child { border-bottom: 0; }
+.education-simple h3 { margin: 0 0 5px; font-size: 16px; }
+.education-simple p { margin: 0; }
+@media (max-width: 800px) {
+  .simple-skill-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .simple-project { grid-template-columns: 100px minmax(0, 1fr); gap: 14px; }
+  .simple-project .text-link { grid-column: 2; }
+}
+@media (max-width: 560px) {
+  .personal-hero { padding-top: 70px; padding-bottom: 58px; }
+  .personal-hero h1 { font-size: clamp(39px, 11vw, 52px); }
+  .simple-skill-grid { grid-template-columns: 1fr; }
+  .simple-project { grid-template-columns: 1fr; gap: 8px; }
+  .simple-project .text-link { grid-column: auto; }
+  .personal-project-grid { grid-template-columns: 1fr; }
+}
