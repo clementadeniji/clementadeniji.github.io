@@ -735,3 +735,15 @@ body.contact-page .footer-links a:hover, body.contact-page .footer-bottom a:hove
 @media (prefers-reduced-motion:reduce) {
   body.contact-page *, body.contact-page *::before, body.contact-page *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
 }
+
+body.contact-page .form-panel {
+  transition: transform 260ms cubic-bezier(.2,.75,.25,1), border-color 220ms ease, box-shadow 220ms ease;
+}
+body.contact-page .form-panel:hover {
+  border-color: color-mix(in srgb, var(--border) 55%, var(--text));
+  box-shadow: 0 20px 48px rgba(0,0,0,.085);
+}
+body.contact-page .contact-detail:focus-visible {
+  outline: 3px solid var(--text);
+  outline-offset: 3px;
+}
