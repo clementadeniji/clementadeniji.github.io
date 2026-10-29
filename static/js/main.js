@@ -50,6 +50,50 @@
     revealItems.forEach((item) => observer.observe(item));
   } else revealItems.forEach((item) => item.classList.add('is-visible'));
 
+
+  // Cursor-proximity magnification inspired by the macOS Dock.
+  // Keep the effect subtle and disable it for touch and reduced-motion users.
+  const motionQuery = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+  if (motionQuery.matches) {
+    const motionSelector = [
+      '.brand-mark', '.main-nav > a', '.theme-toggle',
+      '.button', '.personal-interest-grid .interest-card',
+      '.personal-project-card', '.simple-skill-grid .about-skill',
+      '.tool-shot', '.simple-project', '.contact-detail',
+      '.social-row a', '.footer-links a'
+    ].join(',');
+    const motionItems = [...document.querySelectorAll(motionSelector)];
+    motionItems.forEach((item) => item.classList.add('motion-item'));
+    let pointerX = -1000;
+    let pointerY = -1000;
+    let framePending = false;
+    const updateMagnification = () => {
+      motionItems.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const distance = Math.hypot(pointerX - centerX, pointerY - centerY);
+        const radius = Math.max(115, Math.min(180, rect.width * 1.5));
+        const influence = Math.max(0, 1 - distance / radius);
+        item.style.setProperty('--proximity-scale', (1 + influence * 0.085).toFixed(3));
+      });
+      framePending = false;
+    };
+    document.addEventListener('pointermove', (event) => {
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      if (!framePending) {
+        framePending = true;
+        window.requestAnimationFrame(updateMagnification);
+      }
+    }, { passive: true });
+    document.addEventListener('pointerleave', () => {
+      pointerX = -1000;
+      pointerY = -1000;
+      motionItems.forEach((item) => item.style.setProperty('--proximity-scale', '1'));
+    });
+  }
+
   const form = document.querySelector('#contact-form');
   if (!form) return;
   const message = form.querySelector('#message');
