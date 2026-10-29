@@ -474,3 +474,25 @@ body.about-page .education-simple h3 { font-size: 15px; }
   body.about-page .simple-skill-grid { grid-template-columns: 1fr; }
   body.home-page .hero-actions { flex-direction: column; align-items: stretch; }
 }
+
+
+/* Tool cards: compact thumbnails with clearly visible learning resources. */
+body.about-page .tool-gallery-grid { gap: 12px; }
+body.about-page .tool-shot { max-width: 100%; }
+body.about-page .tool-shot img { aspect-ratio: 16 / 10; }
+body.about-page .tool-shot figcaption { gap: 5px; padding: 12px; }
+body.about-page .tool-shot figcaption strong { font-size: 13px; }
+body.about-page .tool-shot figcaption span { font-size: 11px; line-height: 1.5; }
+body.about-page .tool-resource-link {
+  display: inline-block;
+  width: fit-content;
+  margin-top: 4px;
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 650;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: text-decoration-color .2s;
+}
+body.about-page .tool-resource-link:hover { text-decoration-color: currentColor; }
