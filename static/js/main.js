@@ -51,6 +51,38 @@
   } else revealItems.forEach((item) => item.classList.add('is-visible'));
 
 
+  // Custom circle-and-dot cursor for mouse/trackpad users only.
+  // Touch devices and reduced-motion preferences keep the native cursor behavior.
+  if (window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    cursor.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(cursor);
+    let cursorFrame = 0;
+    let cursorX = -100;
+    let cursorY = -100;
+    document.addEventListener('pointermove', (event) => {
+      if (event.pointerType === 'touch') return;
+      cursorX = event.clientX;
+      cursorY = event.clientY;
+      if (cursorFrame) return;
+      cursorFrame = window.requestAnimationFrame(() => {
+        cursor.style.transform = 'translate3d(' + cursorX + 'px, ' + cursorY + 'px, 0) translate(-50%, -50%)';
+        cursor.classList.add('is-visible');
+        cursorFrame = 0;
+      });
+    }, { passive: true });
+    document.addEventListener('pointerover', (event) => {
+      if (event.target.closest('a, button, input, textarea, [role="button"]')) cursor.classList.add('is-hovering');
+    });
+    document.addEventListener('pointerout', (event) => {
+      if (event.target.closest('a, button, input, textarea, [role="button"]') &&
+          !event.relatedTarget?.closest('a, button, input, textarea, [role="button"]')) cursor.classList.remove('is-hovering');
+    });
+    document.addEventListener('pointerleave', () => cursor.classList.remove('is-visible'));
+    document.addEventListener('pointerenter', () => cursor.classList.add('is-visible'));
+  }
+
   // Cursor-proximity magnification inspired by the macOS Dock.
   // Keep the effect subtle and disable it for touch and reduced-motion users.
   const motionQuery = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
