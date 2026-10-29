@@ -111,3 +111,81 @@ html[data-theme="light"] body.home-page .footer-bottom a span {
   .personal-journey-inner { grid-template-columns: 1fr; gap: 25px; }
   .personal-interest-grid .interest-card { min-height: 175px; }
 }
+
+
+/* Personal homepage additions: text-only project and closing sections. */
+.personal-project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 38px;
+}
+.personal-project-card {
+  min-height: 245px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: transform .2s, border-color .2s;
+}
+.personal-project-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(24, 59, 99, .35);
+}
+.personal-project-index {
+  color: var(--faint);
+  font: 10px var(--mono);
+  letter-spacing: .1em;
+}
+.personal-project-card h3 {
+  font: 700 21px/1.3 var(--display);
+  letter-spacing: -.025em;
+  margin: 25px 0 10px;
+}
+.personal-project-card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 0 0 22px;
+}
+.personal-project-card .text-link { margin-top: auto; }
+.personal-project-note {
+  color: var(--faint);
+  font-size: 11px;
+  margin: 18px 0 0;
+}
+.personal-closing { padding-top: 82px; padding-bottom: 82px; }
+.personal-closing-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 48px;
+}
+.personal-closing-inner > div:first-child { max-width: 640px; }
+.personal-closing-inner h2 {
+  font: 750 clamp(32px, 4.5vw, 49px)/1.17 var(--display);
+  letter-spacing: -.045em;
+  margin: 0;
+}
+.personal-closing-inner > div:first-child > p:last-child {
+  max-width: 570px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 18px 0 0;
+}
+.personal-closing-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  flex-shrink: 0;
+}
+@media (max-width: 680px) {
+  .personal-project-grid { grid-template-columns: 1fr; }
+  .personal-project-card { min-height: 220px; padding: 23px; }
+  .personal-closing-inner { align-items: flex-start; flex-direction: column; gap: 26px; }
+  .personal-closing { padding-top: 65px; padding-bottom: 65px; }
+}
