@@ -2,11 +2,13 @@
   const root = document.documentElement;
   const themeButton = document.querySelector('.theme-toggle');
   const themeLabel = document.querySelector('.theme-label');
+  const themeColorMeta = document.querySelector('meta[name="theme-color"]');
   const setTheme = (theme) => {
     root.dataset.theme = theme;
     try { localStorage.setItem('portfolio-theme', theme); } catch (_) { /* Storage may be disabled. */ }
     if (themeLabel) themeLabel.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
     if (themeButton) themeButton.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`);
+    if (themeColorMeta) themeColorMeta.setAttribute('content', theme === 'dark' ? '#07111f' : '#f4f7fb');
   };
   let savedTheme = root.dataset.theme || 'dark';
   try { savedTheme = localStorage.getItem('portfolio-theme') || savedTheme; } catch (_) { /* Keep the page default theme. */ }
@@ -20,10 +22,24 @@
     menuButton.setAttribute('aria-expanded', String(open));
     nav?.classList.toggle('is-open', open);
   });
-  nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
-    nav.classList.remove('is-open');
+  const closeMenu = () => {
+    nav?.classList.remove('is-open');
     menuButton?.setAttribute('aria-expanded', 'false');
-  }));
+  };
+  nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeMenu();
+      menuButton?.focus();
+    }
+  });
+  document.addEventListener('click', (event) => {
+    if (!nav || !menuButton || !nav.classList.contains('is-open')) return;
+    if (!nav.contains(event.target) && !menuButton.contains(event.target)) closeMenu();
+  });
+  window.addEventListener('resize', () => {
+    if (window.matchMedia('(min-width: 681px)').matches) closeMenu();
+  });
 
   document.querySelectorAll('#copyright-year').forEach((node) => { node.textContent = new Date().getFullYear(); });
   const revealItems = document.querySelectorAll('.reveal');
