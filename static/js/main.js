@@ -59,7 +59,7 @@
       '.brand-mark', '.main-nav > a', '.theme-toggle',
       '.button', '.personal-interest-grid .interest-card',
       '.personal-project-card', '.simple-skill-grid .about-skill',
-      '.tool-shot', '.simple-project', '.contact-detail',
+      '.tool-shot', '.simple-project', '.contact-detail', '.form-panel',
       '.social-row a', '.footer-links a'
     ].join(',');
     const motionItems = [...document.querySelectorAll(motionSelector)];
