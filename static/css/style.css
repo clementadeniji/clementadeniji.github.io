@@ -597,3 +597,47 @@ html[data-theme="dark"] body.home-page .tool-resource-link,
 html[data-theme="dark"] body.about-page .tool-resource-link {
   color: #e0e0e0;
 }
+
+
+/* Subtle macOS-inspired pointer motion: smooth magnification, never bulky. */
+.motion-item {
+  --proximity-scale: 1;
+  transform: scale(var(--proximity-scale));
+  transform-origin: center;
+  transition:
+    transform 260ms cubic-bezier(.2, .75, .25, 1),
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background-color 220ms ease;
+  will-change: transform;
+}
+.motion-item:hover,
+.motion-item:focus-visible {
+  transform: translateY(-3px) scale(calc(var(--proximity-scale) * 1.025));
+}
+.motion-item:active {
+  transform: translateY(0) scale(calc(var(--proximity-scale) * .97));
+}
+body.home-page .personal-interest-grid .interest-card:hover,
+body.home-page .personal-project-card:hover,
+body.about-page .simple-skill-grid .about-skill:hover,
+body.about-page .tool-shot:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, .07);
+}
+body.home-page .button,
+body.about-page .button,
+body.contact-page .button {
+  transition: transform 220ms cubic-bezier(.2, .75, .25, 1), background-color 180ms ease, border-color 180ms ease;
+}
+body.home-page .main-nav > a,
+body.about-page .main-nav > a,
+body.contact-page .main-nav > a,
+body.home-page .footer-links a,
+body.about-page .footer-links a,
+body.contact-page .footer-links a {
+  transition: color 180ms ease, transform 180ms ease;
+}
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .motion-item { transform: none !important; transition: none !important; will-change: auto; }
+  .motion-item:hover, .motion-item:focus-visible, .motion-item:active { transform: none !important; }
+}
