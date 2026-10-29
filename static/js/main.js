@@ -8,8 +8,8 @@
     if (themeLabel) themeLabel.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
     if (themeButton) themeButton.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`);
   };
-  let savedTheme = 'dark';
-  try { savedTheme = localStorage.getItem('portfolio-theme') || 'dark'; } catch (_) { /* Keep the default theme. */ }
+  let savedTheme = root.dataset.theme || 'dark';
+  try { savedTheme = localStorage.getItem('portfolio-theme') || savedTheme; } catch (_) { /* Keep the page default theme. */ }
   setTheme(savedTheme === 'light' ? 'light' : 'dark');
   themeButton?.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
 
