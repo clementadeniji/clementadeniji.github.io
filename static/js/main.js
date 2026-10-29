@@ -28,7 +28,7 @@
   };
   nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' && nav?.classList.contains('is-open')) {
       closeMenu();
       menuButton?.focus();
     }
