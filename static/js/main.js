@@ -51,36 +51,66 @@
   } else revealItems.forEach((item) => item.classList.add('is-visible'));
 
 
-  // Custom circle-and-dot cursor for mouse/trackpad users only.
-  // Touch devices and reduced-motion preferences keep the native cursor behavior.
+  // Smooth two-part cursor: the dot tracks the pointer while the ring eases behind it.
+  // Difference blending automatically inverts the cursor over light and dark content.
   if (window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
-    const cursor = document.createElement('div');
-    cursor.className = 'custom-cursor';
-    cursor.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(cursor);
-    let cursorFrame = 0;
-    let cursorX = -100;
-    let cursorY = -100;
+    const ring = document.createElement('div');
+    const dot = document.createElement('div');
+    ring.className = 'custom-cursor';
+    dot.className = 'custom-cursor-dot';
+    ring.setAttribute('aria-hidden', 'true');
+    dot.setAttribute('aria-hidden', 'true');
+    document.body.append(ring, dot);
+
+    let targetX = -100, targetY = -100;
+    let ringX = -100, ringY = -100;
+    let visible = false;
+    const interactiveSelector = 'a, button, input, textarea, [role="button"]';
+
     document.addEventListener('pointermove', (event) => {
       if (event.pointerType === 'touch') return;
-      cursorX = event.clientX;
-      cursorY = event.clientY;
-      if (cursorFrame) return;
-      cursorFrame = window.requestAnimationFrame(() => {
-        cursor.style.transform = 'translate3d(' + cursorX + 'px, ' + cursorY + 'px, 0) translate(-50%, -50%)';
-        cursor.classList.add('is-visible');
-        cursorFrame = 0;
-      });
+      targetX = event.clientX;
+      targetY = event.clientY;
+      if (!visible) {
+        visible = true;
+        ring.classList.add('is-visible');
+        dot.classList.add('is-visible');
+        ringX = targetX;
+        ringY = targetY;
+      }
+      dot.style.transform = 'translate3d(' + targetX + 'px, ' + targetY + 'px, 0) translate(-50%, -50%)';
     }, { passive: true });
+
+    const animateRing = () => {
+      ringX += (targetX - ringX) * 0.16;
+      ringY += (targetY - ringY) * 0.16;
+      ring.style.transform = 'translate3d(' + ringX + 'px, ' + ringY + 'px, 0) translate(-50%, -50%)';
+      window.requestAnimationFrame(animateRing);
+    };
+    window.requestAnimationFrame(animateRing);
+
     document.addEventListener('pointerover', (event) => {
-      if (event.target.closest('a, button, input, textarea, [role="button"]')) cursor.classList.add('is-hovering');
+      if (event.target.closest(interactiveSelector)) {
+        ring.classList.add('is-hovering');
+        dot.classList.add('is-hovering');
+      }
     });
     document.addEventListener('pointerout', (event) => {
-      if (event.target.closest('a, button, input, textarea, [role="button"]') &&
-          !event.relatedTarget?.closest('a, button, input, textarea, [role="button"]')) cursor.classList.remove('is-hovering');
+      if (event.target.closest(interactiveSelector) &&
+          !event.relatedTarget?.closest(interactiveSelector)) {
+        ring.classList.remove('is-hovering');
+        dot.classList.remove('is-hovering');
+      }
     });
-    document.addEventListener('pointerleave', () => cursor.classList.remove('is-visible'));
-    document.addEventListener('pointerenter', () => cursor.classList.add('is-visible'));
+    document.addEventListener('pointerleave', () => {
+      visible = false;
+      ring.classList.remove('is-visible');
+      dot.classList.remove('is-visible');
+    });
+    document.addEventListener('pointerenter', () => {
+      if (visible) return;
+      // The next pointermove places both cursor elements at the correct position.
+    });
   }
 
   // Cursor-proximity magnification inspired by the macOS Dock.
